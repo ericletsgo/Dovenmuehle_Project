@@ -9,4 +9,7 @@
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
 
-export const CHANGE_USERNAME = 'boilerplate/Home/CHANGE_USERNAME';
+export const CHANGE_STRING = 'App/HomePage/CHANGE_STRING';
+export const SEND_STRINGS = 'App/HomePage/SEND_STRINGS';
+export const SEND_STRINGS_SUCCESS = 'App/HomePage/SEND_STRINGS_SUCCESS';
+export const SEND_STRINGS_ERROR = 'App/HomePage/SEND_STRINGS_ERROR';

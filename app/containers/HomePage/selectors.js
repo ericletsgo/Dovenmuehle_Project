@@ -5,12 +5,12 @@
 import { createSelector } from 'reselect';
 import { initialState } from './reducer';
 
-const selectHome = state => state.home || initialState;
+const selectHome = state => state.homePage || initialState;
 
-const makeSelectUsername = () =>
+const makeSelectString = () =>
   createSelector(
     selectHome,
-    homeState => homeState.username,
+    substate => substate.string,
   );
 
-export { selectHome, makeSelectUsername };
+export { selectHome, makeSelectString };

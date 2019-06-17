@@ -7,23 +7,21 @@
  *
  */
 
-import produce from 'immer';
-import { CHANGE_USERNAME } from './constants';
+import { CHANGE_STRING } from './constants';
 
 // The initial state of the App
 export const initialState = {
-  username: '',
+  string: '',
 };
 
 /* eslint-disable default-case, no-param-reassign */
-const homeReducer = (state = initialState, action) =>
-  produce(state, draft => {
-    switch (action.type) {
-      case CHANGE_USERNAME:
-        // Delete prefixed '@' from the github username
-        draft.username = action.username.replace(/@/gi, '');
-        break;
-    }
-  });
+const homeReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case CHANGE_STRING:
+      return Object.assign({}, state, { string: action.string });
+    default:
+      return state;
+  }
+};
 
 export default homeReducer;

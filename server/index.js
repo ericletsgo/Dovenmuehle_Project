@@ -1,56 +1,49 @@
-/* eslint consistent-return:0 import/order:0 */
-
 const express = require('express');
-const logger = require('./logger');
+const path = require('path');
+const bodyParser = require('body-parser');
+const db = require('../database/index.js');
 
-const argv = require('./argv');
-const port = require('./port');
-const setup = require('./middlewares/frontendMiddleware');
-const isDev = process.env.NODE_ENV !== 'production';
-const ngrok =
-  (isDev && process.env.ENABLE_TUNNEL) || argv.tunnel
-    ? require('ngrok')
-    : false;
-const { resolve } = require('path');
 const app = express();
+const port = 3000;
 
-// If you need a backend, e.g. an API, add your custom backend-specific middleware here
-// app.use('/api', myApi);
-
-// In production we need to pass these values in instead of relying on webpack
-setup(app, {
-  outputPath: resolve(process.cwd(), 'build'),
-  publicPath: '/',
-});
-
-// get the intended host and port number, use localhost and port 3000 if not provided
-const customHost = argv.host || process.env.HOST;
-const host = customHost || null; // Let http.Server use its default IPv6/4 host
-const prettyHost = customHost || 'localhost';
-
-// use the gzipped bundle
-app.get('*.js', (req, res, next) => {
-  req.url = req.url + '.gz'; // eslint-disable-line
-  res.set('Content-Encoding', 'gzip');
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
   next();
 });
 
-// Start your app.
-app.listen(port, host, async err => {
-  if (err) {
-    return logger.error(err.message);
-  }
+app.use(express.static(path.join(__dirname, '../build')));
 
-  // Connect to ngrok in dev mode
-  if (ngrok) {
-    let url;
-    try {
-      url = await ngrok.connect(port);
-    } catch (e) {
-      return logger.error(e);
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  }),
+);
+
+// Fetching strings from database on list page
+app.get('/loadstrings', (req, res) => {
+  const handleRequest = (err, data) => {
+    if (err) {
+      res.status(500).send();
+    } else {
+      res.status(200).send(data);
     }
-    logger.appStarted(port, prettyHost, url);
-  } else {
-    logger.appStarted(port, prettyHost);
-  }
+  };
+  db.getStrings(handleRequest);
+});
+
+// Posting string to dabase
+app.post('/', (req, res) => {
+  const string = Object.keys(req.body);
+  const handleRequest = (err, data) => {
+    if (err) {
+      res.status(500).send();
+    } else {
+      res.status(202).send(data);
+    }
+  };
+  db.insertString(string, handleRequest);
+});
+
+app.listen(port, () => {
+  console.log(`server running at: http://localhost:${port}`);
 });

@@ -15,7 +15,12 @@
  *    }
  */
 
-import { CHANGE_USERNAME } from './constants';
+import {
+  CHANGE_STRING,
+  SEND_STRINGS,
+  SEND_STRINGS_SUCCESS,
+  SEND_STRINGS_ERROR,
+} from './constants';
 
 /**
  * Changes the input field of the form
@@ -24,9 +29,14 @@ import { CHANGE_USERNAME } from './constants';
  *
  * @return {object} An action object with a type of CHANGE_USERNAME
  */
-export function changeUsername(username) {
-  return {
-    type: CHANGE_USERNAME,
-    username,
-  };
-}
+// export function changeUsername(username) {
+//   return {
+//     type: CHANGE_USERNAME,
+//     username,
+//   };
+// }
+
+export const changeString = string => ({ type: CHANGE_STRING, string });
+export const sendInput = () => ({ type: SEND_STRINGS });
+export const sendStringsSuccess = () => ({ type: SEND_STRINGS_SUCCESS });
+export const sendStringsError = error => ({ type: SEND_STRINGS_ERROR, error });

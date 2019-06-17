@@ -8,12 +8,12 @@ import { defineMessages } from 'react-intl';
 export const scope = 'boilerplate.components.Header';
 
 export default defineMessages({
-  home: {
-    id: `${scope}.home`,
-    defaultMessage: 'Home',
+  input: {
+    id: `${scope}.input`,
+    defaultMessage: 'String Input',
   },
-  features: {
-    id: `${scope}.features`,
-    defaultMessage: 'Features',
+  list: {
+    id: `${scope}.list`,
+    defaultMessage: 'List of Strings',
   },
 });
